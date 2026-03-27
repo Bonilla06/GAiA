@@ -63,7 +63,9 @@
       if (isset($_GET["ruta"])) {
         if (
           $_GET["ruta"] == "inicio" ||
-          $_GET["ruta"] == "apoyos" 
+          $_GET["ruta"] == "apoyos" ||
+          $_GET["ruta"] == "sedes" 
+
         ) {
           include "modulos/" . $_GET["ruta"] . ".php";
         } //fin del enrutador
