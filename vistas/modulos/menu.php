@@ -43,14 +43,14 @@
               </li>
 
               <li class="nav-item">
-                <a href="./index2.html" class="nav-link">
+                <a href="./sedes" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Sedes</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="./index3.html" class="nav-link">
+                <a href="Usuarios" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Usuarios</p>
                 </a>
@@ -68,7 +68,7 @@
 
 
           <li class="nav-item">
-            <a href="pages/widgets.html" class="nav-link">
+            <a href="identificacion" class="nav-link">
               <i class="nav-icon fas fa-life-ring"></i>
               <p>
                 Identificación de apoyos
@@ -97,14 +97,14 @@
             
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./index.html" class="nav-link">
+                <a href="verificacion" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Verificación</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="./index2.html" class="nav-link">
+                <a href="puntuacion" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Puntuación</p>
                 </a>
