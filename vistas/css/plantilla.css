@@ -5,64 +5,47 @@ VISTA IDENTIFICACION DE APOYOS
     letter-spacing: 1px;
 }
 
-#vista-identificacion .apoyo-card {
-    /* Igual a la imagen original: Fondo blanco intenso con un desvanecido radial verde en la esquina superior derecha */
-    background: radial-gradient(ellipse at top right, #17c42a 0%, rgba(72, 72, 72, 0) 55%);
-    background-color: #343a40;
-    /* Fallback */
+#vista-identificacion .apoyo-radial-card {
+    background-color: #343a40 !important;
+    background-image: radial-gradient(ellipse at top right, #17c42a 0%, transparent 65%) !important;
+    color: white;
     border-radius: 12px;
     border: 1px solid #343a40;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
 }
 
-#vista-identificacion .apoyo-card .card-body {
-    min-height: 150px;
+#vista-identificacion .apoyo-radial-card .inner {
+    padding: 2.5rem 1.5rem;
+    /* Crecer las tarjetas */
 }
 
-#vista-identificacion .apoyo-card .plus-icon {
+#vista-identificacion .apoyo-radial-card .inner h4 {
+    font-weight: 700;
     font-size: 1.5rem;
-    font-weight: 300;
-}
-
-/* Modales */
-#vista-identificacion .apoyo-modal .modal-content {
-    border: none;
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: #f4f6f9;
-}
-
-#vista-identificacion .apoyo-modal .modal-header {
-    /* El mismo color azul vibrante de la cabecera modal de la imagen */
-    background-color: #343a40;
+    margin-bottom: 5px;
     color: white;
-    border-bottom: none;
-    padding: 12px 20px;
 }
 
-#vista-identificacion .apoyo-modal .modal-header i {
-    font-size: 1.2rem;
-    width: 30px;
+#vista-identificacion .apoyo-radial-card .inner p {
+    font-size: 1.05rem;
+    color: #dfdfdf;
 }
 
-#vista-identificacion .apoyo-modal .modal-title {
-    font-size: 1rem;
-    flex-grow: 1;
-    letter-spacing: 1px;
+
+#vista-identificacion .small-box .collapse-opciones {
+    background: rgba(16, 19, 16, 0.552);
+    border-top: 1px solid rgba(225, 232, 222, 0.688);
 }
 
-#vista-identificacion .apoyo-modal .modal-header .close {
-    opacity: 1;
-    outline: none;
-    width: 30px;
-}
-
-#vista-identificacion .apoyo-modal .apoyo-btn {
+#vista-identificacion .apoyo-btn {
     border-radius: 6px;
     font-size: 0.85rem;
+    background-color: #252525 !important;
+    border-color: #252525 !important;
+    color: white !important;
 }
 
-#vista-identificacion .apoyo-modal .btn-primary {
-    background-color: #343a40;
-    border-color: #343a40;
+#vista-identificacion .apoyo-btn:hover {
+    background-color: #1a1a1a !important;
+    border-color: #1a1a1a !important;
 }
