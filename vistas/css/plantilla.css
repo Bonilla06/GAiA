@@ -1,0 +1,68 @@
+/*=============================================
+VISTA IDENTIFICACION DE APOYOS
+=============================================*/
+#vista-identificacion .titulo-seccion {
+    letter-spacing: 1px;
+}
+
+#vista-identificacion .apoyo-card {
+    /* Igual a la imagen original: Fondo blanco intenso con un desvanecido radial verde en la esquina superior derecha */
+    background: radial-gradient(ellipse at top right, #17c42a 0%, rgba(72, 72, 72, 0) 55%);
+    background-color: #343a40;
+    /* Fallback */
+    border-radius: 12px;
+    border: 1px solid #343a40;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+#vista-identificacion .apoyo-card .card-body {
+    min-height: 150px;
+}
+
+#vista-identificacion .apoyo-card .plus-icon {
+    font-size: 1.5rem;
+    font-weight: 300;
+}
+
+/* Modales */
+#vista-identificacion .apoyo-modal .modal-content {
+    border: none;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #f4f6f9;
+}
+
+#vista-identificacion .apoyo-modal .modal-header {
+    /* El mismo color azul vibrante de la cabecera modal de la imagen */
+    background-color: #343a40;
+    color: white;
+    border-bottom: none;
+    padding: 12px 20px;
+}
+
+#vista-identificacion .apoyo-modal .modal-header i {
+    font-size: 1.2rem;
+    width: 30px;
+}
+
+#vista-identificacion .apoyo-modal .modal-title {
+    font-size: 1rem;
+    flex-grow: 1;
+    letter-spacing: 1px;
+}
+
+#vista-identificacion .apoyo-modal .modal-header .close {
+    opacity: 1;
+    outline: none;
+    width: 30px;
+}
+
+#vista-identificacion .apoyo-modal .apoyo-btn {
+    border-radius: 6px;
+    font-size: 0.85rem;
+}
+
+#vista-identificacion .apoyo-modal .btn-primary {
+    background-color: #343a40;
+    border-color: #343a40;
+}
