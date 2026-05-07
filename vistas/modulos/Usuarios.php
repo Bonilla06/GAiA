@@ -107,12 +107,12 @@ AGREGAR USUARIO   -->
                           <div class="row">
                               <div class="col-md-5">
                                   <!-- <label for="">Tipo</label> -->
-                                  <select class="form-control select2bs4" name="nuevoTipoDocumento" id="" required>
+                                  <select class="form-control" name="nuevoTipoDocumento" required>
                                       <option value="">Tipo...</option>
-                                      <option value="">TI</option>
-                                      <option value="">CC</option>
-                                      <option value="">CE</option>
-                                      <option value="">PPT</option>
+                                      <option value="TI">TI</option>
+                                      <option value="CC">CC</option>
+                                      <option value="CE">CE</option>
+                                      <option value="PPT">PPT</option>
                                   </select>
                               </div>
                               <div class="input-group col-md-7">
@@ -143,7 +143,7 @@ AGREGAR USUARIO   -->
                       <div class="input-group mb-3 date">
                           <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-                            </div>
+                          </div>
                           <input type="date" class="form-control" name="nuevoFechaNacimiento" placeholder="Fecha de nacimiento" required>
                       </div>
 
@@ -166,16 +166,16 @@ AGREGAR USUARIO   -->
                           </select>
                       </div>
 
-                    <?php
-                        $agregarUsuario = new ControladorUsuarios();
-                        $agregarUsuario->ctrAgregarUsuario();
-                    ?>
               </div>
               <div class="modal-footer justify-content-between">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                   <button type="submit" class="btn btn-primary">Guardar</button>
-                </div>
-            </form>
+              </div>
+              <?php
+                $agregarUsuario = new ControladorUsuarios();
+                $agregarUsuario->ctrAgregarUsuario();
+                ?>
+              </form>
           </div>
           <!-- /.modal-content -->
       </div>

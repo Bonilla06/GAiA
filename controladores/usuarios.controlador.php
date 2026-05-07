@@ -65,9 +65,11 @@ class ControladorUsuarios{
                   "fechaNacimiento" => $_POST["nuevoFechaNacimiento"],
                   "rol" => $_POST["nuevoRol"]
                 );
+                error_log("arreglo de datos:" . $datos["tipoDocumento"]);
+                error_log("arreglo de datos:" . $datos["documentoId"]);
+                error_log("arreglo de datos:" . $datos["nombres"]);
                 $respuesta= ModeloUsuarios::mdlAgregarUsuario($tabla, $datos);
-                var_dump($respuesta);
-                exit;
+
                 if($respuesta == "ok"){
                     echo "<script>
                         Swal.fire({
@@ -77,9 +79,11 @@ class ControladorUsuarios{
                             confirmButtonText: 'Aceptar'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location = 'usuarios';
+                                window.location = 'Usuarios';
                             }
-                        })
+                        });
+                                
+                        
                     </script>";
                     // echo "<br><div class='alert alert-success'>El usuario ha sido registrado correctamente</div>";
                 }else{
