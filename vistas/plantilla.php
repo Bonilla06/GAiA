@@ -8,8 +8,6 @@
 <html lang="es">
 
 <head>
-
-  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>GAiA</title>
@@ -33,6 +31,11 @@
 
     <!-- Estilos Personalizados de la App -->
     <link rel="stylesheet" href="vistas/css/plantilla.css">
+
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="vistas/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="vistas/plugins/toastr/toastr.min.css">
 
     <!-- ************************************************************ -->
 
@@ -69,6 +72,11 @@
 
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="vistas/dist/js/pages/dashboard2.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="vistas/plugins/sweetalert2/sweetalert2.min.js"></script>
+    <!-- Toastr -->
+    <script src="vistas/plugins/toastr/toastr.min.js"></script>
 
     <!-- AdminLTE App -->
     <script src="vistas/dist/js/adminlte.js"></script>
