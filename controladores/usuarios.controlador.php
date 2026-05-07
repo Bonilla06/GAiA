@@ -66,6 +66,8 @@ class ControladorUsuarios{
                   "rol" => $_POST["nuevoRol"]
                 );
                 $respuesta= ModeloUsuarios::mdlAgregarUsuario($tabla, $datos);
+                var_dump($respuesta);
+                exit;
                 if($respuesta == "ok"){
                     echo "<script>
                         Swal.fire({
