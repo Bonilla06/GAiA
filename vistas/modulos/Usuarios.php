@@ -55,7 +55,7 @@
                                 echo "<td>" . $usuario['nombres'] . "</td>";
                                 echo "<td>" . $usuario['apellidos'] . "</td>";
                                 echo "<td>" . $usuario['correo'] . "</td>";
-                                echo "<td>" . $usuario['ficha'] . "</td>";
+                                echo "<td>" . $usuario['codigo'] . "</td>";
                                 echo "<td>" . $usuario['rol'] . "</td>";
                                 echo "<td>";
                                 if ($usuario['estado'] == 'activo') {
