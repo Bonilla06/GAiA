@@ -5,6 +5,10 @@ require_once "conexion.php";
 
 class ModeloUsuarios{
 
+
+    // ************************************
+    // LOGIN DE USUARIO 
+    // ************************************
     static public function mdlIngresarUsuario($documento){
         $stmt = Conexion::conectar()->prepare("SELECT * FROM usuarios WHERE documento_id = :documento");
         $stmt->bindParam(":documento", $documento, PDO::PARAM_STR);
@@ -12,12 +16,19 @@ class ModeloUsuarios{
         return $stmt->fetch();
     }  //fin del metodo mdlIngresarUsuario
 
+
+    // ************************************
+    // LISA DE DE USUARIOS EN LA VENTANA PRINCIPAL
+    // ************************************    
     static public function mdlListarUsuarios(){
         $stmt = Conexion::conectar()->prepare("SELECT * FROM usuarios");
         $stmt->execute();
         return $stmt->fetchAll();    
     }
 
+    // ************************************
+    // AGREGAR USUARIO A LA BD
+    // ************************************    
     static public function mdlAgregarUsuario($tabla, $datos){
         
         $stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (tipo_documento, documento_id, nombres, apellidos, correo, fecha_nacimiento, rol, password) VALUES (:tipoDocumento, :documentoId, :nombres, :apellidos, :correo, :fechaNacimiento, :rol, :documentoId)");
@@ -36,6 +47,12 @@ class ModeloUsuarios{
         }
     }
 
-
+    static public function mdlMostrarUsuarios($tabla, $item, $valor){
+        $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :valor");
+        $stmt->bindParam(":valor", $valor, PDO::PARAM_STR);
+        error_log("valor en el modelo:" . $tabla);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
 
 } // fin de la clase ModeloUsuarios

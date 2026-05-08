@@ -119,7 +119,7 @@ AGREGAR USUARIO   -->
                                   <div class="input-group-prepend">
                                       <span class="input-group-text"><i class="fas fa-id-card"></i></span>
                                   </div>
-                                  <input type="text" class="form-control" name="nuevoDocumento" placeholder="Numero identificación" required>
+                                  <input type="text" class="form-control" name="nuevoDocumento" id="nuevoDocumento" placeholder="Numero identificación" required>
                               </div>
 
                           </div>
