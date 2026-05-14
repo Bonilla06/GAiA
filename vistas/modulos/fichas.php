@@ -101,10 +101,10 @@ AGREGAR FICHA   -->
                           <select class="form-control" name="nuevaSedeFicha" required>
                               <option value="">Seleccionar sede</option>
                               <?php
-                              //$sedes = ControladorSedes::ctrListarSedes();
-                              //foreach ($sedes as $key => $value) {
-                                  //echo '<option value="'.$value["id_sede"].'">'.$value["descripcion_sede"].'</option>';
-                              //}
+                              $sedes = ControladorSedes::ctrListarSedes();
+                              foreach ($sedes as $key => $value) {
+                                  echo '<option value="'.$value["id_sede"].'">'.$value["descripcion_sede"].'</option>';
+                              }
                               ?>
                           </select>
                       </div>
