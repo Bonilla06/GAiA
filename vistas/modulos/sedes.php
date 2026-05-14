@@ -33,7 +33,6 @@
                               <th>ID</th>
                               <th>Nombre</th>
                               <th>Dirección</th>
-                              <th>Ciudad</th>
                               <th>Estado</th>
                               <th>Acciones</th>
                           </tr>
@@ -44,21 +43,20 @@
                             if ($respuesta) {
                                 foreach ($respuesta as $sede) {
                                     echo "<tr>";
-                                    echo "<td>" . $sede['id'] . "</td>";
-                                    echo "<td>" . $sede['nombre'] . "</td>";
-                                    echo "<td>" . $sede['direccion'] . "</td>";
-                                    echo "<td>" . $sede['ciudad'] . "</td>";
+                                    echo "<td>" . $sede['id_sede'] . "</td>";
+                                    echo "<td>" . $sede['descripcion_sede'] . "</td>";
+                                    echo "<td>" . $sede['direccion_sede'] . "</td>";
                                     echo "<td>";
                                     if ($sede['estado'] == 'activo') {
-                                        echo "<button class='btn btn-xs btn-success btnActivarSede' data-estadoSede='inactivo' data-idSede='" . $sede['id'] . "'>activo</button>";
+                                        echo "<button class='btn btn-xs btn-success btnActivarSede' data-estadoSede='inactivo' data-idSede='" . $sede['id_sede'] . "'>activo</button>";
                                     } else {
-                                        echo "<button class='btn btn-xs btn-danger btnActivarSede' data-estadoSede='activo' data-idSede='" . $sede['id'] . "'>inactivo</button>";
+                                        echo "<button class='btn btn-xs btn-danger btnActivarSede' data-estadoSede='activo' data-idSede='" . $sede['id_sede'] . "'>inactivo</button>";
                                     };
                                     echo "</td>";
                                     echo "<td>";
                                     echo '<div class="btn-group">
-                                <button class="btn btn-sm btn-outline-light btnEditarSede" data-idSede="' . $sede["id"] . '" data-toggle="modal" data-target="#modal-editarSede"><i class="fas fa-edit"></i></button>
-                                <button class="btn btn-sm btn-outline-light btnConsultarSede" data-idSede="' . $sede["id"] . '" data-toggle="modal" data-target="#modal-consultarSede"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-sm btn-outline-light btnEditarSede" data-idSede="' . $sede["id_sede"] . '" data-toggle="modal" data-target="#modal-editarSede"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-sm btn-outline-light btnConsultarSede" data-idSede="' . $sede["id_sede"] . '" data-toggle="modal" data-target="#modal-consultarSede"><i class="fas fa-eye"></i></button>
                               </div>
                             </td>';
     
@@ -104,13 +102,6 @@ AGREGAR SEDE   -->
                               <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
                           </div>
                           <input type="text" class="form-control" name="nuevaDireccionSede" placeholder="Dirección" required>
-                      </div>
-
-                      <div class="input-group mb-3">
-                          <div class="input-group-prepend">
-                              <span class="input-group-text"><i class="fas fa-city"></i></span>
-                          </div>
-                          <input type="text" class="form-control" name="nuevaCiudadSede" placeholder="Ciudad" required>
                       </div>
 
               </div>
@@ -162,13 +153,6 @@ EDITAR SEDE   -->
                           <input type="text" class="form-control" name="editarDireccionSede" id="editarDireccionSede" placeholder="Dirección" required>
                       </div>
 
-                      <div class="input-group mb-3">
-                          <div class="input-group-prepend">
-                              <span class="input-group-text"><i class="fas fa-city"></i></span>
-                          </div>
-                          <input type="text" class="form-control" name="editarCiudadSede" id="editarCiudadSede" placeholder="Ciudad" required>
-                      </div>
-
               </div>
               <div class="modal-footer justify-content-between">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -215,13 +199,6 @@ CONSULTAR SEDE   -->
                           <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
                       </div>
                       <input type="text" class="form-control" id="consultarDireccionSede" readonly>
-                  </div>
-
-                  <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                          <span class="input-group-text"><i class="fas fa-city"></i></span>
-                      </div>
-                      <input type="text" class="form-control" id="consultarCiudadSede" readonly>
                   </div>
 
               </div>
