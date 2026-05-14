@@ -21,10 +21,11 @@ class ModeloUsuarios{
     // LISA DE DE USUARIOS EN LA VENTANA PRINCIPAL
     // ************************************    
     static public function mdlListarUsuarios(){
-        $stmt = Conexion::conectar()->prepare("SELECT u.*, f.codigo FROM usuarios u LEFT JOIN fichas f ON f.id = u.ficha_id WHERE u.rol<>'ADMIN';");
-        $stmt->execute();
-        return $stmt->fetchAll();    
-    }
+    // Cambiamos f.id por f.id_ficha
+    $stmt = Conexion::conectar()->prepare("SELECT u.*, f.codigo FROM usuarios u LEFT JOIN fichas f ON f.id_ficha = u.ficha_id WHERE u.rol<>'Administrador';");
+    $stmt->execute();
+    return $stmt->fetchAll();    
+}
 
     // ************************************
     // AGREGAR USUARIO A LA BD
