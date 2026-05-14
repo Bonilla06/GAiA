@@ -21,14 +21,20 @@ class ControladorUsuarios{
                 $passEncriptado=crypt($_POST["ingPassword"],'$2a$07$asdfsdvafdsgf04sdfsadfGAiADeveloper$');
 
                 if (is_array($respuesta)){
-                    if ($respuesta["password"] == $passEncriptado && $respuesta["documento_id"]== $documento){
-                        $_SESSION["iniciarSesion"] = "ok";
-                        echo "<script>window.location = 'inicio';</script>";
-                    } else{
-                    // var_dump($respuesta);
-                    echo  "<br><div class='alert alert-danger'>Usuario o contraseña incorrecto</div>";
-                    return;
-                    }                      
+                    //preguntar si el usuario esta activo
+                    if ($respuesta["estado"]== "activo"){
+                        if ($respuesta["password"] == $passEncriptado && $respuesta["documento_id"]== $documento){
+                            $_SESSION["iniciarSesion"] = "ok";
+                            echo "<script>window.location = 'inicio';</script>";
+                        } else{
+                        // var_dump($respuesta);
+                        echo  "<br><div class='alert alert-danger'>Usuario o contraseña incorrecto</div>";
+                        return;
+                        }   
+                    } else {
+                        echo  "<br><div class='alert alert-warning'>El usuario esta inactivo</div>";
+                        return;
+                    }                   
                 }
 
             }    
@@ -46,21 +52,26 @@ class ControladorUsuarios{
     } //fin del metodo ctrListarUsuarios
 
     // ************************************
+    // LISTA DE FICHAS
+    // ************************************   
+    static public function ctrListarFichas(){
+        $respuesta= ModeloUsuarios::mdlListarFichas();
+        return $respuesta;
+    } //fin del metodo ctrListarFichas
+
+    // ************************************
     // AGREGAR USUARIO A LA BD
     // ************************************
     public function ctrAgregarUsuario(){
 
         
         if (isset($_POST["nuevoTipoDocumento"])  && 
-        isset($_POST["nuevoDocumento"])  && 
-        isset($_POST["nuevoNombre"])  && 
-        isset($_POST["nuevoApellido"])  && 
-        isset($_POST["nuevoCorreo"])  && 
-        isset($_POST["nuevoFechaNacimiento"])  && 
+            isset($_POST["nuevoDocumento"])  && 
+            isset($_POST["nuevoNombre"])  && 
+            isset($_POST["nuevoApellido"])  && 
+            isset($_POST["nuevoCorreo"])  && 
+            isset($_POST["nuevoFechaNacimiento"])  && 
             isset($_POST["nuevoRol"]))
-
-
-
 
             {
                 // echo "entrando a agregar usuario";
@@ -76,6 +87,11 @@ class ControladorUsuarios{
 
                 $passEncriptado=crypt($_POST["nuevoDocumento"],'$2a$07$asdfsdvafdsgf04sdfsadfGAiADeveloper$');
 
+                $fichaId = null;
+                if ($_POST["nuevoRol"] == "Aprendiz" && isset($_POST["nuevaFicha"])) {
+                    $fichaId = $_POST["nuevaFicha"];
+                }
+
                 $datos = array(
                   "tipoDocumento" => $_POST["nuevoTipoDocumento"],
                   "documentoId" => $_POST["nuevoDocumento"],
@@ -84,7 +100,8 @@ class ControladorUsuarios{
                   "correo" => $_POST["nuevoCorreo"],
                   "fechaNacimiento" => $_POST["nuevoFechaNacimiento"],
                   "rol" => $_POST["nuevoRol"],
-                  "password"=> $passEncriptado
+                  "password"=> $passEncriptado,
+                  "ficha_id" => $fichaId
                 );
                 $respuesta= ModeloUsuarios::mdlAgregarUsuario($tabla, $datos);
 
@@ -123,5 +140,15 @@ class ControladorUsuarios{
         $respuesta = ModeloUsuarios::mdlMostrarUsuarios($tabla, $item, $valor);
         return $respuesta;
     }
+
+
+    // ************************************
+    // ACTUALIZAR ESTADO DE UN USUARIO
+    // ************************************
+    static public function ctrCambiarEstadoUsuario($idUsuario, $estado){
+        $tabla = "usuarios";
+        $respuesta = ModeloUsuarios::mdlCambiarEstadoUsuario($tabla, $idUsuario, $estado);
+        return $respuesta;
+    }   
 
 }//fin de la clase ControladorUsuarios

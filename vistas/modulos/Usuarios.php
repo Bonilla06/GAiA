@@ -59,9 +59,9 @@
                                 echo "<td>" . $usuario['rol'] . "</td>";
                                 echo "<td>";
                                 if ($usuario['estado'] == 'activo') {
-                                    echo "<button class='btn btn-xs btn-success'>activo</button>";
+                                    echo "<button class='btn btn-xs btn-success btnActivarUsuario' data-estadoUsuario='inactivo' data-idUsuario='" . $usuario['id'] . "'>activo</button>";
                                 } else {
-                                    echo "<button class='btn btn-xs btn-danger'>inactivo</button>";
+                                    echo "<button class='btn btn-xs btn-danger btnActivarUsuario' data-estadoUsuario='activo' data-idUsuario='" . $usuario['id'] . "'>inactivo</button>";
                                 };
                                 echo "</td>";
                                 echo "<td>";
@@ -158,12 +158,35 @@ AGREGAR USUARIO   -->
                           <div class="input-group-prepend">
                               <span class="input-group-text"><i class="fas fa-user-tag"></i></span>
                           </div>
-                          <select class="form-control" name="nuevoRol" required>
+                          <select class="form-control" name="nuevoRol" id="nuevoRol" required>
                               <option value="">Seleccionar rol...</option>
                               <option value="Bienestar">Bienestar</option>
                               <option value="Financiera">Financiera</option>
                               <option value="Aprendiz">Aprendiz</option>
                           </select>
+                      </div>
+
+                      <div class="input-group mb-3" id="divFicha" style="display: none;">
+                          <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fas fa-list-ol"></i></span>
+                          </div>
+                          <input type="text" class="form-control" list="listaFichas" id="inputFicha" placeholder="Escriba o seleccione una ficha...">
+                          <datalist id="listaFichas">
+                              <?php
+                              $fichas = ControladorUsuarios::ctrListarFichas();
+                              foreach ($fichas as $ficha) {
+                                  echo '<option data-id="'.$ficha["id_ficha"].'" data-programa="'.$ficha["programa_ficha"].'" value="'.$ficha["codigo"].'"></option>';
+                              }
+                              ?>
+                          </datalist>
+                          <input type="hidden" name="nuevaFicha" id="nuevaFicha">
+                      </div>
+
+                      <div class="input-group mb-3" id="divDescripcionFicha" style="display: none;">
+                          <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="fas fa-info-circle"></i></span>
+                          </div>
+                          <input type="text" class="form-control" id="descripcionFicha" placeholder="Programa de formación" readonly>
                       </div>
 
               </div>
