@@ -12,38 +12,28 @@ class ControladorUsuarios{
                 // Allow printable characters in password to support existing passwords with symbols
                 preg_match('/^[\x20-\x7E]+$/', $_POST["ingPassword"])
             ){
+                require_once "modelos/validacion_contrasenas.php";
+                
                 $documento = $_POST["ingDocumento"];
                 $respuesta = ModeloUsuarios::mdlIngresarUsuario($documento);
 
-                 //$tempo=crypt("admin123",'$2a$07$asdfsdvafdsgf04sdfsadfGAiADeveloper$');
-                 //var_dump($tempo);
-                 //exit;
-
                 $inputPassword = $_POST["ingPassword"];
-                $passEncriptado=crypt($inputPassword,'$2a$07$asdfsdvafdsgf04sdfsadfGAiADeveloper$');
 
                 if (is_array($respuesta)){
                     // preguntar si el usuario esta activo
                     if ($respuesta["estado"]== "activo"){
-                        // Aceptar tanto el hash almacenado como contraseñas en texto plano
                         $storedPassword = isset($respuesta["password"]) ? $respuesta["password"] : null;
                         $passwordMatches = false;
+                        
                         if ($storedPassword !== null) {
-                            if ($storedPassword == $passEncriptado) {
-                                $passwordMatches = true;
-                            } elseif ($storedPassword == $inputPassword) {
-                                // contraseña almacenada en claro; aceptamos el login
-                                $passwordMatches = true;
-                            }
+                            // Usar el método de verificación que soporta tanto password_hash como hashes antiguos
+                            $passwordMatches = ValidacionContrasenas::verificar($inputPassword, $storedPassword);
                         }
 
                         if ($passwordMatches && $respuesta["documento_id"]== $documento){
-                            // Si la contraseña almacenada es exactamente la contraseña en claro,
-                            // re-hashearla y actualizar la BD para migrar a formato seguro.
-                            if ($storedPassword === $inputPassword) {
-                                // generar hash
-                                $nuevoHash = crypt($inputPassword,'$2a$07$asdfsdvafdsgf04sdfsadfGAiADeveloper$');
-                                // actualizar en la BD (método de modelo)
+                            // Si el hash es antiguo, rehasearlo a bcrypt para mayor seguridad
+                            if (ValidacionContrasenas::necesitaRehash($storedPassword)) {
+                                $nuevoHash = ValidacionContrasenas::hashear($inputPassword);
                                 ModeloUsuarios::mdlActualizarPassword($respuesta["id"], $nuevoHash);
                             }
 
@@ -61,7 +51,7 @@ class ControladorUsuarios{
                             return;
                         }
                     } else {
-                        // Usuario inactivo: no mostrar mensaje adicional (comportamiento original restaurado)
+                        // Usuario inactivo: no mostrar mensaje adicional
                         return;
                     }
                 } else {
@@ -128,9 +118,36 @@ class ControladorUsuarios{
               ) {
 
                 $tabla="usuarios";
-                // $passEncriptado=$_POST["nuevoDocumento"];
 
-                $passEncriptado=crypt($_POST["nuevoDocumento"],'$2a$07$asdfsdvafdsgf04sdfsadfGAiADeveloper$');
+                // ==========================================
+                // VALIDAR Y HASHEAR CONTRASEÑA
+                // ==========================================
+                require_once "modelos/validacion_contrasenas.php";
+                
+                // Si se proporciona contraseña, validarla; si no, usar el documento como temporal
+                if (isset($_POST["nuevoPassword"]) && !empty($_POST["nuevoPassword"])) {
+                    $password = $_POST["nuevoPassword"];
+                    $validacionPassword = ValidacionContrasenas::validacionAvanzada($password, $_POST["nuevoDocumento"]);
+                    
+                    if (!$validacionPassword['valida']) {
+                        $errores = implode("\n", $validacionPassword['errores']);
+                        echo "<script>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Contraseña inválida',
+                                html: '" . nl2br($errores) . "',
+                                showConfirmButton: true,
+                                confirmButtonText: 'Aceptar'
+                            });
+                        </script>";
+                        return;
+                    }
+                    $passEncriptado = ValidacionContrasenas::hashear($password);
+                } else {
+                    // Contraseña temporal: usar documento como contraseña inicial
+                    // Los administradores deberían requerir al usuario cambiarla al primer login
+                    $passEncriptado = ValidacionContrasenas::hashear($_POST["nuevoDocumento"]);
+                }
 
                 $fichaId = null;
                 if ($_POST["nuevoRol"] == "Aprendiz" && isset($_POST["nuevaFicha"])) {
@@ -157,10 +174,15 @@ class ControladorUsuarios{
                 $respuesta= ModeloUsuarios::mdlAgregarUsuario($tabla, $datos);
 
                 if($respuesta == "ok"){
+                    $mensajePassword = isset($_POST["nuevoPassword"]) && !empty($_POST["nuevoPassword"]) 
+                        ? "" 
+                        : "<br><small>Nota: Se asignó el número de documento como contraseña temporal.</small>";
+                    
                     echo "<script>
                         Swal.fire({
                             icon: 'success',
                             title: 'El usuario ha sido registrado correctamente',
+                            html: 'El usuario puede ahora iniciar sesión.$mensajePassword',
                             showConfirmButton: true,
                             confirmButtonText: 'Aceptar'
                         }).then((result) => {
@@ -194,7 +216,8 @@ class ControladorUsuarios{
             isset($_POST["nuevoApellido"])  && 
             isset($_POST["nuevoCorreo"])  && 
             isset($_POST["nuevoFechaNacimiento"])  && 
-            isset($_POST["nuevoRol"]))
+            isset($_POST["nuevoRol"]) &&
+            isset($_POST["nuevoPassword"]))  // Nueva validación para contraseña
             {
                 if (
                 preg_match('/^[0-9]+$/', $_POST["nuevoDocumento"]) &&
@@ -202,9 +225,34 @@ class ControladorUsuarios{
                 preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚÑñ ]+$/', $_POST["nuevoApellido"])
               ) {
 
-                $tabla="usuarios";
+                // ==========================================
+                // VALIDAR CONTRASEÑA
+                // ==========================================
+                require_once "modelos/validacion_contrasenas.php";
+                
+                $password = $_POST["nuevoPassword"];
+                $validacionPassword = ValidacionContrasenas::validacionAvanzada($password, $_POST["nuevoDocumento"]);
+                
+                if (!$validacionPassword['valida']) {
+                    $errores = implode("\n", $validacionPassword['errores']);
+                    echo "<script>
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Contraseña inválida',
+                            html: '" . nl2br($errores) . "',
+                            showConfirmButton: true,
+                            confirmButtonText: 'Aceptar'
+                        });
+                    </script>";
+                    return;
+                }
 
-                $passEncriptado=crypt($_POST["nuevoDocumento"],'$2a$07$asdfsdvafdsgf04sdfsadfGAiADeveloper$');
+                // ==========================================
+                // HASHEAR CONTRASEÑA
+                // ==========================================
+                $passEncriptado = ValidacionContrasenas::hashear($password);
+
+                $tabla="usuarios";
 
                 $fichaId = null;
                 if ($_POST["nuevoRol"] == "Aprendiz" && isset($_POST["nuevaFicha"])) {
@@ -247,6 +295,16 @@ class ControladorUsuarios{
                 }else{
                     echo "<br><div class='alert alert-danger'>Error al agregar el usuario</div>";
                 }
+              } else {
+                    echo "<script>
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Datos inválidos',
+                            text: 'Por favor, verifica que el nombre y apellidos solo contengan letras.',
+                            showConfirmButton: true,
+                            confirmButtonText: 'Aceptar'
+                        });
+                    </script>";
               }
         }  // fin del isset
     }
@@ -270,18 +328,23 @@ class ControladorUsuarios{
                 preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚÑñ ]+$/', $_POST["editarNombre"]) &&
                 preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚÑñ ]+$/', $_POST["editarApellido"])
             ) {
+                require_once "modelos/validacion_contrasenas.php";
+                
                 $tabla = "usuarios";
 
                 if ($_POST["editarPassword"] != "") {
-                    if (preg_match('/^[a-zA-Z0-9]+$/', $_POST["editarPassword"])) {
-                        $passEncriptado = crypt($_POST["editarPassword"], '$2a$07$asdfsdvafdsgf04sdfsadfGAiADeveloper$');
-                    } else {
+                    $password = $_POST["editarPassword"];
+                    $validacionPassword = ValidacionContrasenas::validacionAvanzada($password, $_POST["editarDocumento"]);
+                    
+                    if (!$validacionPassword['valida']) {
+                        $errores = implode("\n", $validacionPassword['errores']);
                         echo "<script>
                             Swal.fire({
                                 icon: 'error',
-                                title: '¡La contraseña no puede ir vacía o llevar caracteres especiales!',
+                                title: 'Contraseña inválida',
+                                html: '" . nl2br($errores) . "',
                                 showConfirmButton: true,
-                                confirmButtonText: 'Cerrar'
+                                confirmButtonText: 'Aceptar'
                             }).then((result) => {
                                 if (result.isConfirmed) {
                                     window.location = 'Usuarios';
@@ -290,6 +353,7 @@ class ControladorUsuarios{
                         </script>";
                         return;
                     }
+                    $passEncriptado = ValidacionContrasenas::hashear($password);
                 } else {
                     $passEncriptado = $_POST["passwordActual"];
                 }
@@ -373,22 +437,28 @@ class ControladorUsuarios{
                 preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚÑñ ]+$/', $_POST["editarNombrePerfil"]) &&
                 preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚÑñ ]+$/', $_POST["editarApellidoPerfil"])
             ) {
+                require_once "modelos/validacion_contrasenas.php";
+                
                 $tabla = "usuarios";
 
                 if ($_POST["editarPasswordPerfil"] != "") {
-                    if (preg_match('/^[a-zA-Z0-9]+$/', $_POST["editarPasswordPerfil"])) {
-                        $passEncriptado = crypt($_POST["editarPasswordPerfil"], '$2a$07$asdfsdvafdsgf04sdfsadfGAiADeveloper$');
-                    } else {
+                    $password = $_POST["editarPasswordPerfil"];
+                    $validacionPassword = ValidacionContrasenas::validacionAvanzada($password, $_POST["documentoPerfil"]);
+                    
+                    if (!$validacionPassword['valida']) {
+                        $errores = implode("\n", $validacionPassword['errores']);
                         echo "<script>
                             Swal.fire({
                                 icon: 'error',
-                                title: '¡La contraseña no puede llevar caracteres especiales!',
+                                title: 'Contraseña inválida',
+                                html: '" . nl2br($errores) . "',
                                 showConfirmButton: true,
                                 confirmButtonText: 'Cerrar'
                             });
                         </script>";
                         return;
                     }
+                    $passEncriptado = ValidacionContrasenas::hashear($password);
                 } else {
                     // we need to get current password from DB or assume it's kept. 
                     // To do this we can fetch current user:

@@ -12,7 +12,7 @@ class ModeloUsuarios
     // ************************************
     static public function mdlIngresarUsuario($documento)
     {
-        $stmt = Conexion::conectar()->prepare("SELECT u.*, u.fichas_id AS ficha_id, u.doc_identidad_maestro_url AS foto FROM usuarios u WHERE documento_id = :documento");
+        $stmt = Conexion::conectar()->prepare("SELECT u.*, u.ficha_id AS ficha_id, u.doc_identidad_maestro_url AS foto FROM usuarios u WHERE documento_id = :documento");
         $stmt->bindParam(":documento", $documento, PDO::PARAM_STR);
         $stmt->execute();
         return $stmt->fetch();

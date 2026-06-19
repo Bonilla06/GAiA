@@ -124,6 +124,51 @@
                         <input type="email" class="form-control" name="nuevoCorreo" placeholder="Correo" required>
                     </div>
 
+                    <!-- CONTRASEÑA -->
+                    <label for="">Contraseña<span class="text-danger">*</span></label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                        </div>
+                        <input type="password" class="form-control nuevaContrasena" name="nuevoPassword" id="nuevoPasswordRegistro" placeholder="Contraseña" required>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary togglePassword" type="button" data-target="#nuevoPasswordRegistro">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Barra de fortaleza de contraseña -->
+                    <div class="form-group">
+                        <div class="progress mb-2" id="barraFortaleza" style="display: none; height: 25px;">
+                            <div class="progress-bar" id="indicadorFortaleza" role="progressbar" style="width: 0%; background-color: #dc3545;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                <small id="textoFortaleza" class="text-white">Débil</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Criterios de validación -->
+                    <div class="form-group" id="criteriosContrasena" style="display: none;">
+                        <small class="form-text text-muted">La contraseña debe cumplir con:</small>
+                        <ul class="list-unstyled">
+                            <li id="criterio-longitud" class="text-danger">
+                                <i class="fas fa-times-circle"></i> Mínimo 8 caracteres
+                            </li>
+                            <li id="criterio-mayuscula" class="text-danger">
+                                <i class="fas fa-times-circle"></i> Al menos una mayúscula
+                            </li>
+                            <li id="criterio-minuscula" class="text-danger">
+                                <i class="fas fa-times-circle"></i> Al menos una minúscula
+                            </li>
+                            <li id="criterio-numero" class="text-danger">
+                                <i class="fas fa-times-circle"></i> Al menos un número
+                            </li>
+                            <li id="criterio-especial" class="text-danger">
+                                <i class="fas fa-times-circle"></i> Un carácter especial (!@#$%^&*)
+                            </li>
+                        </ul>
+                    </div>
+
                     <!-- FOTO -->
                     <div class="form-group">
                         <div class="panel">SUBIR FOTO</div>
