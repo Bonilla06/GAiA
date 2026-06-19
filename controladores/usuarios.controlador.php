@@ -150,7 +150,7 @@ class ControladorUsuarios{
                 }
 
                 $fichaId = null;
-                if ($_POST["nuevoRol"] == "Aprendiz" && isset($_POST["nuevaFicha"])) {
+                if ($_POST["nuevoRol"] == "Aprendiz" && isset($_POST["nuevaFicha"]) && $_POST["nuevaFicha"] !== "") {
                     $fichaId = $_POST["nuevaFicha"];
                 }
 
@@ -255,7 +255,7 @@ class ControladorUsuarios{
                 $tabla="usuarios";
 
                 $fichaId = null;
-                if ($_POST["nuevoRol"] == "Aprendiz" && isset($_POST["nuevaFicha"])) {
+                if ($_POST["nuevoRol"] == "Aprendiz" && isset($_POST["nuevaFicha"]) && $_POST["nuevaFicha"] !== "") {
                     $fichaId = $_POST["nuevaFicha"];
                 }
 
